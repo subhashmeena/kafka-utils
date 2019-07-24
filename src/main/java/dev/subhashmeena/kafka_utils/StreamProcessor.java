@@ -22,18 +22,21 @@ public class StreamProcessor {
 		props.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "kafka:9092");
 		props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
 		props.put(ConsumerConfig.GROUP_ID_CONFIG, "two");
-		//props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG,StringSerializer.class);
-		//props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG,LongSerializer.class);
+	
 		props.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass());
 		props.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, Serdes.Long().getClass());
 		
 		StreamsBuilder builder = new StreamsBuilder();
 		KStream<String,String> lines = builder.stream("topic-one",Consumed.with(Serdes.String(),Serdes.String()));
 		lines.groupByKey().count().toStream().to("topic-four",Produced.with(Serdes.String(), Serdes.Long()));
-//		lines.print(Printed.toSysOut());;
 		
-		KafkaStreams streams = new KafkaStreams(builder.build(),props);
+		final KafkaStreams streams = new KafkaStreams(builder.build(),props);
 		streams.start();
 		
+		Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            System.out.println("### Stopping Map Sample Application ###");
+            streams.close();
+        }));
+
 	}
 }

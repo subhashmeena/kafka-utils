@@ -24,7 +24,7 @@ public class App
         
         KafkaProducer producer = new KafkaProducer(props);
         
-        producer.send(new ProducerRecord<String,String>("topic-one","hello","world"));
+        producer.send(new ProducerRecord<String,String>("topic-one","key2","world"));
         producer.close();
     }
 }
