@@ -34,9 +34,9 @@ public class StreamProcessor {
 		streams.start();
 		
 		Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            System.out.println("### Stopping Map Sample Application ###");
-            streams.close();
-        }));
+            		System.out.println("## Stopping stream processor application ##");
+           		streams.close();
+       		 }));
 
 	}
 }
