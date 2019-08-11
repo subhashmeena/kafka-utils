@@ -1,9 +1,6 @@
 package dev.subhashmeena.kafka_utils;
 
-/**
- * Hello world!
- *
- */
+
 
 import java.util.Properties;
 import org.apache.kafka.clients.producer.ProducerConfig;
